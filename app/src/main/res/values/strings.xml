@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Otus</string>
+    <string name="btn_details">Детали</string>
+    <string name="film_1">Ничего хорошего в отеле «Эль Рояль»</string>
+    <string name="poster">Poster</string>
+    <string name="film_2">Достать ножи</string>
+    <string name="film_3">Лёгкое поведение</string>
 </resources>
