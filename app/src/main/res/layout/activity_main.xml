@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,9 +40,11 @@
             android:textSize="13sp"
              />
         <Button
+            android:id="@+id/btnDetails1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_details"/>
+            android:text="@string/btn_details"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -73,6 +75,7 @@
             android:textSize="13sp" />
 
         <Button
+            android:id="@+id/btnDetails2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_details" />
@@ -106,9 +109,10 @@
             android:textSize="13sp" />
 
         <Button
+            android:id="@+id/btnDetails3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_details" />
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
