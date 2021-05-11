@@ -32,6 +32,7 @@
             android:contentDescription="@string/poster" />
 
         <TextView
+            android:id="@+id/name_film1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -67,6 +68,7 @@
             android:contentDescription="@string/poster" />
 
         <TextView
+            android:id="@+id/name_film2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -101,6 +103,7 @@
             android:contentDescription="@string/poster" />
 
         <TextView
+            android:id="@+id/name_film3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
