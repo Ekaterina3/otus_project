@@ -1,18 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    android:layout_gravity="top"
+    android:gravity="top"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/film1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:gravity="center|top"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toLeftOf="@id/film2"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/film1"
+            android:layout_weight="1"
+            android:contentDescription="@string/poster" />
+
+        <TextView
+            android:id="@+id/name_film1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/film_1"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+             />
+        <Button
+            android:id="@+id/btnDetails1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_details"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/film2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@id/film1"
+        app:layout_constraintRight_toLeftOf="@id/film3"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/film2"
+            android:contentDescription="@string/poster" />
+
+        <TextView
+            android:id="@+id/name_film2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/film_2"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            />
+
+        <Button
+            android:id="@+id/btnDetails2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_details" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/film3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@id/film2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/film3"
+            android:contentDescription="@string/poster" />
+
+        <TextView
+            android:id="@+id/name_film3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/film_3"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            />
+
+        <Button
+            android:id="@+id/btnDetails3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_details" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
