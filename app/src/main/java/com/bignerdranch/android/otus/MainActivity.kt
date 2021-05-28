@@ -3,12 +3,12 @@ package com.bignerdranch.android.otus
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 
 private const val REQUEST_CODE_DETAILS = 0
 private const val KEY_LAST_SELECTED_FILM_INDEX = "last_selected_film_index"
 private const val KEY_FILM_WAS_SELECTED = "film_was_selected"
+private const val KEY_FAVOURITES_LIST = "favourites_list"
 
 class MainActivity : AppCompatActivity() {
     private val recycler by lazy {
@@ -25,30 +25,56 @@ class MainActivity : AppCompatActivity() {
         FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2),
         FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3)
     )
+    private var favsList: ArrayList<Int> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initRecycler()
 
+        // check last selected element
         filmWasSelected = savedInstanceState?.getBoolean(KEY_FILM_WAS_SELECTED, false) ?: false
         if (filmWasSelected) {
             lastSelectedFilmIndex = savedInstanceState?.getInt(KEY_LAST_SELECTED_FILM_INDEX, 0) ?: 0
             selectFilm(films[lastSelectedFilmIndex], lastSelectedFilmIndex)
         }
+
+        // check favourites list
+        favsList = savedInstanceState?.getIntegerArrayList(KEY_FAVOURITES_LIST) ?: arrayListOf()
+        if (favsList.size > 0) {
+            favsList.forEach {
+                films[it].isFavourite = true
+            }
+            recycler.adapter?.notifyDataSetChanged()
+        }
     }
 
     private fun initRecycler () {
         recycler.adapter = FilmsAdapter(films) {
-            item, position ->
-            run {
-                onDetailsBtnClicked(item, position)
-            }
+            item, position, type -> onBtnClicked(type, item, position)
         }
     }
 
+    private fun onBtnClicked(type: String, item:FilmData, position: Int) {
+        if (type == KEY_FAVOURITES_BTN) {
+            onFavouritesBtnClicked(item, position)
+        } else {
+            onDetailsBtnClicked(item, position)
+        }
+    }
+
+    private fun onFavouritesBtnClicked (item: FilmData, position: Int) {
+        if (item.isFavourite) {
+            favsList.remove(position)
+        } else {
+            favsList.add(position)
+        }
+        item.isFavourite = !item.isFavourite
+        recycler.adapter?.notifyItemChanged(position)
+    }
+
     private fun onDetailsBtnClicked (item: FilmData, position: Int) {
-        Log.d("check-fl", "click details")
         resetSelection()
         selectFilm(item, position)
 
@@ -61,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putInt(KEY_LAST_SELECTED_FILM_INDEX, lastSelectedFilmIndex)
         outState.putBoolean(KEY_FILM_WAS_SELECTED, filmWasSelected)
+        outState.putIntegerArrayList(KEY_FAVOURITES_LIST, favsList)
     }
 
     private fun resetSelection() {
@@ -76,5 +103,10 @@ class MainActivity : AppCompatActivity() {
         if (!filmWasSelected) {
             filmWasSelected = true
         }
+    }
+
+    companion object {
+        const val KEY_FAVOURITES_BTN = "favourites_btn"
+        const val KEY_DETAILS_BTN = "details_btn"
     }
 }

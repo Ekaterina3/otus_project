@@ -1,14 +1,15 @@
 package com.bignerdranch.android.otus
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.otus.MainActivity.Companion.KEY_DETAILS_BTN
+import com.bignerdranch.android.otus.MainActivity.Companion.KEY_FAVOURITES_BTN
 
 class FilmsAdapter (
         private val items: List<FilmData>,
-        private val clickListener: (item: FilmData, position: Int) -> Unit
+        private val clickListener: (item: FilmData, position: Int, clickType: String) -> Unit
 ): RecyclerView.Adapter<FilmViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,7 +23,12 @@ class FilmsAdapter (
 
         val detailsButton = holder.itemView.findViewById<View>(R.id.btnDetails)
         detailsButton.setOnClickListener {
-            clickListener(item, position)
+            clickListener(item, position, KEY_DETAILS_BTN)
+        }
+
+        val favouriteButton = holder.itemView.findViewById<View>(R.id.btnFavourites)
+        favouriteButton.setOnClickListener {
+            clickListener(item, position, KEY_FAVOURITES_BTN)
         }
     }
 
