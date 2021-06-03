@@ -1,8 +1,11 @@
 package com.bignerdranch.android.otus
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.recyclerview.widget.RecyclerView
+
+private const val REQUEST_CODE_DETAILS = 0
 
 class FavouritesActivity(
 ) : MainActivity() {
@@ -37,7 +40,7 @@ class FavouritesActivity(
         if (type == KEY_FAVOURITES_BTN) {
             onFavouritesBtnClicked(item, position)
         } else {
-//            onDetailsBtnClicked(item, position)
+            onDetailsBtnClicked(item)
         }
     }
 
@@ -46,5 +49,11 @@ class FavouritesActivity(
         films[item.id - 1].isFavourite = false
         recyclerItems.removeAt(position)
         recycler.adapter?.notifyDataSetChanged()
+    }
+
+    private fun onDetailsBtnClicked(item: FilmData) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(DetailsActivity.FILM_DATA, item)
+        startActivityForResult(intent, REQUEST_CODE_DETAILS)
     }
 }
