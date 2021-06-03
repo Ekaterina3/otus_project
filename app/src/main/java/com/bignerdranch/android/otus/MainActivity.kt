@@ -18,16 +18,7 @@ open class MainActivity : AppCompatActivity() {
     }
     private var lastSelectedFilmIndex: Int = 0
     private var filmWasSelected: Boolean = false
-
-    private val films = mutableListOf(
-            FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1),
-            FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2),
-            FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3),
-            FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1),
-            FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2),
-            FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3)
-    )
-    private var favsList: ArrayList<Int> = ArrayList()
+    private var favouritesIdList: ArrayList<Int> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,22 +34,16 @@ open class MainActivity : AppCompatActivity() {
         }
 
         // check favourites list
-        favsList = savedInstanceState?.getIntegerArrayList(KEY_FAVOURITES_LIST) ?: arrayListOf()
-        if (favsList.size > 0) {
-            favsList.forEach {
-                films[it].isFavourite = true
+        favouritesIdList = savedInstanceState?.getIntegerArrayList(KEY_FAVOURITES_LIST) ?: arrayListOf()
+        if (favouritesIdList.size > 0) {
+            favouritesIdList.forEach {
+                films[it - 1].isFavourite = true
             }
             recycler.adapter?.notifyDataSetChanged()
         }
 
         findViewById<TextView>(R.id.showFavourites).setOnClickListener {
-            var filteredFilms: List<FilmData> = films.filter {
-                it.isFavourite
-            }
-
-            val intent = Intent(this, FavouritesActivity::class.java)
-            intent.putExtra(FavouritesActivity.FAVOURITES_DATA, ArrayList<FilmData>(filteredFilms))
-            startActivityForResult(intent, REQUEST_CODE_FAVOURITES)
+            showFavouritesActivity()
         }
     }
 
@@ -67,7 +52,7 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onBtnClicked(type: String, item: FilmData, position: Int) {
+    private fun onBtnClicked(type: String, item: FilmData, position: Int) {
         if (type == KEY_FAVOURITES_BTN) {
             onFavouritesBtnClicked(item, position)
         } else {
@@ -77,9 +62,9 @@ open class MainActivity : AppCompatActivity() {
 
     private fun onFavouritesBtnClicked(item: FilmData, position: Int) {
         if (item.isFavourite) {
-            favsList.remove(position)
+            favouritesIdList.remove(item.id)
         } else {
-            favsList.add(position)
+            favouritesIdList.add(item.id)
         }
         item.isFavourite = !item.isFavourite
         recycler.adapter?.notifyItemChanged(position)
@@ -98,7 +83,7 @@ open class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putInt(KEY_LAST_SELECTED_FILM_INDEX, lastSelectedFilmIndex)
         outState.putBoolean(KEY_FILM_WAS_SELECTED, filmWasSelected)
-        outState.putIntegerArrayList(KEY_FAVOURITES_LIST, favsList)
+        outState.putIntegerArrayList(KEY_FAVOURITES_LIST, favouritesIdList)
     }
 
     private fun resetSelection() {
@@ -116,8 +101,34 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showFavouritesActivity() {
+        val favouritesList: List<FilmData> = films.filter {
+            it.isFavourite
+        }
+
+        val intent = Intent(this, FavouritesActivity::class.java)
+        intent.putExtra(FavouritesActivity.FAVOURITES_DATA, ArrayList<FilmData>(favouritesList))
+        intent.putExtra(FavouritesActivity.FAVOURITES_ID_LIST, ArrayList<Int>(favouritesIdList))
+        startActivityForResult(intent, REQUEST_CODE_FAVOURITES)
+    }
+
+    // после возвращения с экрана избранного актуализируем список избранного на главном экране
+    override fun onResume() {
+        super.onResume()
+        recycler.adapter?.notifyDataSetChanged()
+    }
+
     companion object {
         const val KEY_FAVOURITES_BTN = "favourites_btn"
         const val KEY_DETAILS_BTN = "details_btn"
+
+        val films = mutableListOf(
+                FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 1),
+                FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 2),
+                FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 3),
+                FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 4),
+                FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 5),
+                FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 6)
+        )
     }
 }

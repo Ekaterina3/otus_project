@@ -9,4 +9,6 @@
     <string name="description_film_2" translatable="false">Остроумный детектив в духе Агаты Кристи, населенный нетипичными персонажами и вывернутый наизнанку</string>
     <string name="description_film_3" translatable="false">Гонщица-американка врывается в жизнь английских аристократов. Ретро-комедия с Колином Фёртом и эффектным танго.</string>
     <string name="invite">Пригласить друга</string>
+    <string name="show_favourites">Показать избранное</string>
+    <string name="favourites">Избранное</string>
 </resources>

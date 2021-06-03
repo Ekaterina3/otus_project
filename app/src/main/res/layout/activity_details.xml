@@ -37,6 +37,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         tools:src="@drawable/film1"
-        />
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>
