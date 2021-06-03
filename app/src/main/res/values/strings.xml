@@ -11,4 +11,7 @@
     <string name="invite">Пригласить друга</string>
     <string name="show_favourites">Показать избранное</string>
     <string name="favourites">Избранное</string>
+    <string name="alert">Вы уверены, что хотите выйти из приложения?</string>
+    <string name="cancel">Отмена</string>
+    <string name="exit">Выйти</string>
 </resources>

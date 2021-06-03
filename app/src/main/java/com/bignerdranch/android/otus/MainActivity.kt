@@ -3,6 +3,7 @@ package com.bignerdranch.android.otus
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
@@ -116,6 +117,17 @@ open class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         recycler.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+                .setMessage(R.string.alert)
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .setPositiveButton(R.string.exit) { _, _ ->
+                    finish()
+                }
+                .create()
+                .show()
     }
 
     companion object {
