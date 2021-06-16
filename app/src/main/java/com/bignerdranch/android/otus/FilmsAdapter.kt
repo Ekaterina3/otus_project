@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.android.otus.MainActivity.Companion.KEY_DETAILS_BTN
-import com.bignerdranch.android.otus.MainActivity.Companion.KEY_FAVOURITES_BTN
+import com.bignerdranch.android.otus.FilmsListFragment.Companion.KEY_DETAILS_BTN
+import com.bignerdranch.android.otus.FilmsListFragment.Companion.KEY_FAVOURITES_BTN
 
 class FilmsAdapter (
         private val items: List<FilmData>,
