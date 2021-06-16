@@ -7,39 +7,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * A fragment representing a list of Items.
- */
 class FilmsListFragment : Fragment() {
 
     private val films by lazy {
         arguments?.getParcelableArrayList<FilmData>(ARG_FILMS)
     }
     private var recyclerView: RecyclerView? = null
-    private var lastSelectedFilmIndex: Int = 0
-    private var filmWasSelected: Boolean = false
     private var favouritesIdList: ArrayList<Int> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_films_list, container, false)
-        if (view is RecyclerView) {
-            with(view) {
-                adapter = films?.let { film ->
-                    FilmsAdapter(film) { item, position, type ->
-                        onBtnClicked(type, item, position)
-                    }
-                }
-            }
-            recyclerView = view
-        }
-
-        return view
+        return inflater.inflate(R.layout.fragment_films_list, container, false)
     }
 
-    private fun onBtnClicked(type: String, item: FilmData, position: Int) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = view.findViewById(R.id.filmsRecycler)
+        recyclerView?.apply {
+            this.adapter = films?.let { films ->
+                FilmsAdapter(films) { item, position, type ->
+                    onItemClicked(type, item, position)
+                }
+            }
+        }
+    }
+
+    private fun onItemClicked(type: String, item: FilmData, position: Int) {
         if (type == KEY_FAVOURITES_BTN) {
             onFavouritesBtnClicked(item, position)
         } else {
@@ -58,27 +54,13 @@ class FilmsListFragment : Fragment() {
     }
 
     private fun onDetailsBtnClicked(item: FilmData, position: Int) {
-        resetSelection()
         selectFilm(item, position)
-
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragmentContainer, DetailsFragment.newInstance(item), DetailsFragment.TAG)
-            ?.addToBackStack(null)?.commit()
-    }
-
-    private fun resetSelection() {
-        films?.get(lastSelectedFilmIndex)?.isSelected = false
-        recyclerView?.adapter?.notifyItemChanged(lastSelectedFilmIndex)
     }
 
     private fun selectFilm(item: FilmData, position: Int) {
-        item.isSelected = true
+        item.wasVisited = true
         recyclerView?.adapter?.notifyItemChanged(position)
-        lastSelectedFilmIndex = position
-
-        if (!filmWasSelected) {
-            filmWasSelected = true
-        }
+        (activity as? OnItemClickListener)?.onDetailsBtnClicked(item)
     }
 
     companion object {
@@ -94,5 +76,9 @@ class FilmsListFragment : Fragment() {
                     putParcelableArrayList(ARG_FILMS, films)
                 }
             }
+    }
+
+    interface OnItemClickListener {
+        fun onDetailsBtnClicked(item: FilmData)
     }
 }

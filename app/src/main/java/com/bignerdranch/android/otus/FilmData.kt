@@ -8,7 +8,7 @@ data class FilmData(
         val title: Int,
         val description: Int,
         val image: Int,
-        var isSelected: Boolean = false,
+        var wasVisited: Boolean = false,
         var isFavourite: Boolean = false,
         val id: Int
 ): Parcelable

@@ -16,7 +16,7 @@ class FilmViewHolder(filmView: View) : RecyclerView.ViewHolder (filmView) {
         titleView.text = context.getString(item.title)
         imageView.setImageResource(item.image)
 
-        if (item.isSelected) {
+        if (item.wasVisited) {
             titleView.setTextColor(ContextCompat.getColor(context, R.color.purple_200))
         } else {
             titleView.setTextColor(ContextCompat.getColor(context, R.color.black))

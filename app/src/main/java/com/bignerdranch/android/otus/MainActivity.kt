@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-open class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,13 @@ open class MainActivity : AppCompatActivity() {
         } else {
             CustomDialog().show(supportFragmentManager, TAG_DIALOG)
         }
+    }
+
+    override fun onDetailsBtnClicked(item: FilmData) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, DetailsFragment.newInstance(item), DetailsFragment.TAG)
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {
