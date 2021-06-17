@@ -9,4 +9,5 @@
     <string name="alert">Are you sure?</string>
     <string name="cancel">Cancel</string>
     <string name="exit">Exit</string>
+    <string name="home">Home</string>
 </resources>

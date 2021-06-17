@@ -1,10 +1,15 @@
 package com.bignerdranch.android.otus
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickListener {
+    private val bottomNavigationView: BottomNavigationView by lazy {
+        findViewById(R.id.bottomNavigation)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -12,8 +17,19 @@ open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickList
 
         showFilmsList()
 
-        findViewById<TextView>(R.id.showFavouritesBtn).setOnClickListener {
-            showFavouritesList()
+        bottomNavigationView.setOnNavigationItemReselectedListener { false }
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.nav_home -> {
+                    showFilmsList()
+                    true
+                }
+                R.id.nav_favourites -> {
+                    showFavouritesList()
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -34,7 +50,6 @@ open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickList
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragmentContainer, fragment, FilmsListFragment.TAG)
-            .addToBackStack(null)
             .commit()
     }
 
