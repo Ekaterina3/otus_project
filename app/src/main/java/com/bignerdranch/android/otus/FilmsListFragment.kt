@@ -1,11 +1,14 @@
 package com.bignerdranch.android.otus
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 class FilmsListFragment : Fragment() {
 
@@ -14,12 +17,15 @@ class FilmsListFragment : Fragment() {
     }
     private var recyclerView: RecyclerView? = null
     private var favouritesIdList: ArrayList<Int> = ArrayList()
+    private lateinit var mainToolbar: Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_films_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_films_list, container, false)
+        initToolbar()
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,6 +67,15 @@ class FilmsListFragment : Fragment() {
         item.wasVisited = true
         recyclerView?.adapter?.notifyItemChanged(position)
         (activity as? OnItemClickListener)?.onDetailsBtnClicked(item)
+    }
+
+    private fun initToolbar() {
+        mainToolbar = (activity as AppCompatActivity).findViewById(R.id.toolbarMain)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainToolbar.setTitle(R.string.home)
     }
 
     companion object {
