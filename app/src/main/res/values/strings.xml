@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">Otus</string>
     <string name="btn_details">Детали</string>
-    <string name="film_1">Ничего хорошего в отеле «Эль Рояль»</string>
-    <string name="poster">Poster</string>
-    <string name="film_2">Достать ножи</string>
-    <string name="film_3">Лёгкое поведение</string>
-    <string name="description_film_1">Семь незнакомцев, у каждого из которых есть своя тайна, встречаются в заброшенном отеле «Эль Рояль» на озере Тахо. И этой ночью у каждого будет шанс на искупление… прежде чем всё пойдет к чертям.</string>
-    <string name="description_film_2">Остроумный детектив в духе Агаты Кристи, населенный нетипичными персонажами и вывернутый наизнанку</string>
-    <string name="description_film_3">Гонщица-американка врывается в жизнь английских аристократов. Ретро-комедия с Колином Фёртом и эффектным танго.</string>
+    <string name="film_1" translatable="false">Ничего хорошего в отеле «Эль Рояль»</string>
+    <string name="poster">Постер</string>
+    <string name="film_2" translatable="false">Достать ножи</string>
+    <string name="film_3" translatable="false">Лёгкое поведение</string>
+    <string name="description_film_1" translatable="false">Семь незнакомцев, у каждого из которых есть своя тайна, встречаются в заброшенном отеле «Эль Рояль» на озере Тахо. И этой ночью у каждого будет шанс на искупление… прежде чем всё пойдет к чертям.</string>
+    <string name="description_film_2" translatable="false">Остроумный детектив в духе Агаты Кристи, населенный нетипичными персонажами и вывернутый наизнанку</string>
+    <string name="description_film_3" translatable="false">Гонщица-американка врывается в жизнь английских аристократов. Ретро-комедия с Колином Фёртом и эффектным танго.</string>
     <string name="invite">Пригласить друга</string>
+    <string name="show_favourites">Показать избранное</string>
+    <string name="favourites">Избранное</string>
+    <string name="alert">Вы уверены, что хотите выйти из приложения?</string>
+    <string name="cancel">Отмена</string>
+    <string name="exit">Выйти</string>
 </resources>

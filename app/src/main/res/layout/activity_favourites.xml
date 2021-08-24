@@ -11,24 +11,21 @@
         android:id="@+id/showFavourites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:padding="8dp"
-        android:gravity="end"
-        android:textColor="@android:color/holo_blue_dark"
-        android:text="@string/show_favourites"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="@string/favourites"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/filmsRecycler"
+        android:id="@+id/favsRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:padding="8dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        tools:itemCount="5"
+        tools:itemCount="2"
         tools:listitem="@layout/item_film" />
 </LinearLayout>

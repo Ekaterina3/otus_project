@@ -1,74 +1,138 @@
 package com.bignerdranch.android.otus
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 
 private const val REQUEST_CODE_DETAILS = 0
-private const val KEY_FILM_INDEX = "film_index"
+private const val REQUEST_CODE_FAVOURITES = 1
+private const val KEY_LAST_SELECTED_FILM_INDEX = "last_selected_film_index"
 private const val KEY_FILM_WAS_SELECTED = "film_was_selected"
+private const val KEY_FAVOURITES_LIST = "favourites_list"
 
-class MainActivity : AppCompatActivity() {
-    private var lastFilmIndex: Int = 0
+open class MainActivity : AppCompatActivity() {
+    private val recycler by lazy {
+        findViewById<RecyclerView>(R.id.filmsRecycler)
+    }
+    private var lastSelectedFilmIndex: Int = 0
     private var filmWasSelected: Boolean = false
+    private var favouritesIdList: ArrayList<Int> = ArrayList()
 
-    private val films = listOf(
-        FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, R.id.name_film1),
-        FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, R.id.name_film2),
-        FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, R.id.name_film3)
-    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initRecycler()
+
+        // check last selected element
         filmWasSelected = savedInstanceState?.getBoolean(KEY_FILM_WAS_SELECTED, false) ?: false
         if (filmWasSelected) {
-            lastFilmIndex = savedInstanceState?.getInt(KEY_FILM_INDEX, 0) ?: 0
-            selectFilm(lastFilmIndex)
+            lastSelectedFilmIndex = savedInstanceState?.getInt(KEY_LAST_SELECTED_FILM_INDEX, 0) ?: 0
+            selectFilm(films[lastSelectedFilmIndex], lastSelectedFilmIndex)
         }
-        Log.d("check-fl", "$lastFilmIndex")
 
-        findViewById<Button>(R.id.btnDetails1).setOnClickListener {
-            onDetailsBtnClicked(0)
+        // check favourites list
+        favouritesIdList = savedInstanceState?.getIntegerArrayList(KEY_FAVOURITES_LIST) ?: arrayListOf()
+        if (favouritesIdList.size > 0) {
+            favouritesIdList.forEach {
+                films[it - 1].isFavourite = true
+            }
+            recycler.adapter?.notifyDataSetChanged()
         }
-        findViewById<Button>(R.id.btnDetails2).setOnClickListener {
-            onDetailsBtnClicked(1)
-        }
-        findViewById<Button>(R.id.btnDetails3).setOnClickListener {
-            onDetailsBtnClicked(2)
+
+        findViewById<TextView>(R.id.showFavourites).setOnClickListener {
+            showFavouritesActivity()
         }
     }
 
-    private fun onDetailsBtnClicked (filmIndex: Int) {
+    private fun initRecycler () {
+        recycler.adapter = FilmsAdapter(films) { item, position, type -> onBtnClicked(type, item, position)
+        }
+    }
+
+    private fun onBtnClicked(type: String, item: FilmData, position: Int) {
+        if (type == KEY_FAVOURITES_BTN) {
+            onFavouritesBtnClicked(item, position)
+        } else {
+            onDetailsBtnClicked(item, position)
+        }
+    }
+
+    private fun onFavouritesBtnClicked(item: FilmData, position: Int) {
+        if (item.isFavourite) {
+            favouritesIdList.remove(item.id)
+        } else {
+            favouritesIdList.add(item.id)
+        }
+        item.isFavourite = !item.isFavourite
+        recycler.adapter?.notifyItemChanged(position)
+    }
+
+    private fun onDetailsBtnClicked(item: FilmData, position: Int) {
         resetSelection()
-        selectFilm(filmIndex)
+        selectFilm(item, position)
 
         val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra(DetailsActivity.FILM_DATA, films[filmIndex])
+        intent.putExtra(DetailsActivity.FILM_DATA, item)
         startActivityForResult(intent, REQUEST_CODE_DETAILS)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(KEY_FILM_INDEX, lastFilmIndex)
+        outState.putInt(KEY_LAST_SELECTED_FILM_INDEX, lastSelectedFilmIndex)
         outState.putBoolean(KEY_FILM_WAS_SELECTED, filmWasSelected)
+        outState.putIntegerArrayList(KEY_FAVOURITES_LIST, favouritesIdList)
     }
 
     private fun resetSelection() {
-        val lastFilm = films[lastFilmIndex]
-        findViewById<TextView>(lastFilm.nameId).setTextColor(ContextCompat.getColor(this, R.color.black))
+        films[lastSelectedFilmIndex].isSelected = false
+        recycler.adapter?.notifyItemChanged(lastSelectedFilmIndex)
     }
 
-    private fun selectFilm(filmIndex: Int) {
-        val currentFilm = films[filmIndex]
-        findViewById<TextView>(currentFilm.nameId).setTextColor(ContextCompat.getColor(this, R.color.purple_200))
-        lastFilmIndex = filmIndex
+    private fun selectFilm(item: FilmData, position: Int) {
+        item.isSelected = true
+        recycler.adapter?.notifyItemChanged(position)
+        lastSelectedFilmIndex = position
 
         if (!filmWasSelected) {
             filmWasSelected = true
         }
+    }
+
+    private fun showFavouritesActivity() {
+        val favouritesList: List<FilmData> = films.filter {
+            it.isFavourite
+        }
+
+        val intent = Intent(this, FavouritesActivity::class.java)
+        intent.putExtra(FavouritesActivity.FAVOURITES_DATA, ArrayList<FilmData>(favouritesList))
+        intent.putExtra(FavouritesActivity.FAVOURITES_ID_LIST, ArrayList<Int>(favouritesIdList))
+        startActivityForResult(intent, REQUEST_CODE_FAVOURITES)
+    }
+
+    // после возвращения с экрана избранного актуализируем список избранного на главном экране
+    override fun onResume() {
+        super.onResume()
+        recycler.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onBackPressed() {
+        CustomDialog().show(supportFragmentManager, "dialog")
+    }
+
+    companion object {
+        const val KEY_FAVOURITES_BTN = "favourites_btn"
+        const val KEY_DETAILS_BTN = "details_btn"
+
+        val films = mutableListOf(
+                FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 1),
+                FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 2),
+                FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 3),
+                FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 4),
+                FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 5),
+                FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 6)
+        )
     }
 }

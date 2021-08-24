@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Otus</string>
+    <string name="btn_details">Details</string>
+    <string name="poster">Poster</string>
+    <string name="invite">Invite a friend</string>
+    <string name="show_favourites">Show favourites</string>
+    <string name="favourites">Favourites</string>
+    <string name="alert">Are you sure?</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit">Exit</string>
+</resources>

@@ -19,14 +19,14 @@ class DetailsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
         intent.getParcelableExtra<FilmData>(FILM_DATA)?.let { film ->
-            findViewById<TextView>(R.id.titleView).text = getString(film.name)
+            findViewById<TextView>(R.id.titleView).text = getString(film.title)
             findViewById<TextView>(R.id.descriptionView).text = getString(film.description)
             findViewById<ImageView>(R.id.imageView).setImageResource(film.image)
 
             findViewById<Button>(R.id.inviteButton).setOnClickListener {
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, "Интересный фильм, советую посмотреть: ${getString(film.name)}.")
+                    putExtra(Intent.EXTRA_TEXT, "Интересный фильм, советую посмотреть: ${getString(film.title)}.")
                 }
 
                 try {
