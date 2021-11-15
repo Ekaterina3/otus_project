@@ -96,7 +96,7 @@ class DetailsFragment : Fragment() {
         fun newInstance(film: FilmData) =
             DetailsFragment().apply {
                 arguments = Bundle().apply {
-                  putParcelable(ARG_FILM_DATA, film)
+                    putParcelable(ARG_FILM_DATA, film)
                 }
             }
     }

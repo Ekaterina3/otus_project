@@ -1,12 +1,10 @@
 package com.bignerdranch.android.otus
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickListener {
+open class MainActivity : AppCompatActivity() {
     private val bottomNavigationView: BottomNavigationView by lazy {
         findViewById(R.id.bottomNavigation)
     }
@@ -18,8 +16,8 @@ open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickList
 
         showFilmsList()
 
-        bottomNavigationView.setOnNavigationItemReselectedListener { false }
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottomNavigationView.setOnItemReselectedListener {}
+        bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.nav_home -> {
                     showFilmsList()
@@ -47,10 +45,11 @@ open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickList
             it.isFavourite
         }
 
-        val fragment = FilmsListFragment.newInstance(favouritesList as ArrayList<FilmData>)
+        val fragment = FavouriteFilmsListFragment.newInstance(favouritesList as ArrayList<FilmData>)
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainer, fragment, FilmsListFragment.TAG)
+            .replace(R.id.fragmentContainer, fragment, FavouriteFilmsListFragment.TAG)
+            .addToBackStack(FavouriteFilmsListFragment.TAG)
             .commit()
     }
 
@@ -62,23 +61,16 @@ open class MainActivity : AppCompatActivity(), FilmsListFragment.OnItemClickList
         }
     }
 
-    override fun onDetailsBtnClicked(item: FilmData) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, DetailsFragment.newInstance(item), DetailsFragment.TAG)
-            .addToBackStack(null)
-            .commit()
-    }
-
     companion object {
         const val TAG_DIALOG = "dialog"
 
         val films = mutableListOf(
-                FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 1, isFavourite = true),
-                FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 2),
-                FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 3),
-                FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 4),
-                FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 5),
-                FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 6)
+            FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 1, isFavourite = true),
+            FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 2),
+            FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 3),
+            FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 4),
+            FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 5),
+            FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 6)
         )
     }
 }

@@ -1,7 +1,6 @@
 package com.bignerdranch.android.otus
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -33,19 +32,18 @@ class FilmsListFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.filmsRecycler)
         recyclerView?.apply {
-            this.adapter = films?.let { films ->
-                FilmsAdapter(films) { item, position, type ->
-                    onItemClicked(type, item, position)
-                }
+            this.adapter = films?.let { film ->
+                FilmsAdapter(film, object :
+                    FilmsAdapter.ItemClickListener {
+                        override fun detailsBtnClickListener(film: FilmData, position: Int) {
+                            onDetailsBtnClicked(film, position)
+                        }
+                        override fun favouritesBtnClickListener(film: FilmData, position: Int) {
+                            onFavouritesBtnClicked(film, position)
+                        }
+                    }
+                )
             }
-        }
-    }
-
-    private fun onItemClicked(type: String, item: FilmData, position: Int) {
-        if (type == KEY_FAVOURITES_BTN) {
-            onFavouritesBtnClicked(item, position)
-        } else {
-            onDetailsBtnClicked(item, position)
         }
     }
 
@@ -60,13 +58,22 @@ class FilmsListFragment : Fragment() {
     }
 
     private fun onDetailsBtnClicked(item: FilmData, position: Int) {
+//        resetSelection()
         selectFilm(item, position)
+
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragmentContainer, DetailsFragment.newInstance(item), DetailsFragment.TAG)
+            ?.addToBackStack(null)?.commit()
     }
+
+//    private fun resetSelection() {
+//        films?.get(lastSelectedFilmIndex)?.isSelected = false
+//        recyclerView?.adapter?.notifyItemChanged(lastSelectedFilmIndex)
+//    }
 
     private fun selectFilm(item: FilmData, position: Int) {
         item.wasVisited = true
         recyclerView?.adapter?.notifyItemChanged(position)
-        (activity as? OnItemClickListener)?.onDetailsBtnClicked(item)
     }
 
     private fun initToolbar() {
@@ -80,8 +87,6 @@ class FilmsListFragment : Fragment() {
 
     companion object {
         const val TAG = "FilmsListFragment"
-        const val KEY_FAVOURITES_BTN = "favourites_btn"
-        const val KEY_DETAILS_BTN = "details_btn"
         const val ARG_FILMS = "films"
 
         @JvmStatic
@@ -91,9 +96,5 @@ class FilmsListFragment : Fragment() {
                     putParcelableArrayList(ARG_FILMS, films)
                 }
             }
-    }
-
-    interface OnItemClickListener {
-        fun onDetailsBtnClicked(item: FilmData)
     }
 }
