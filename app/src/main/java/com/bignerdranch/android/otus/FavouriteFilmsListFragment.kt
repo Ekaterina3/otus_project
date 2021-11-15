@@ -34,11 +34,11 @@ class FavouriteFilmsListFragment : Fragment() {
             this.adapter = films?.let { film ->
                 FilmsAdapter(film, object :
                     FilmsAdapter.ItemClickListener {
-                    override fun detailsBtnClickListener(item: FilmData, position: Int) {
-                        onDetailsBtnClicked(item, position)
+                    override fun detailsBtnClickListener(film: FilmData, position: Int) {
+                        onDetailsBtnClicked(film, position)
                     }
-                    override fun favouritesBtnClickListener(item: FilmData, position: Int) {
-                        onFavouritesBtnClicked(item, position)
+                    override fun favouritesBtnClickListener(film: FilmData, position: Int) {
+                        onFavouritesBtnClicked(film, position)
                     }
                 }
                 )

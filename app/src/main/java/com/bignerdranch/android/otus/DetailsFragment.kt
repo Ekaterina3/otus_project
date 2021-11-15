@@ -45,22 +45,22 @@ class DetailsFragment : Fragment() {
             view.findViewById<TextView>(R.id.descriptionView).text = getString(it.description)
             view.findViewById<ImageView>(R.id.imageView).setImageResource(it.image)
 
-//            view.findViewById<Button>(R.id.inviteButton).setOnClickListener { _ ->
-//                val intent = Intent(Intent.ACTION_SEND).apply {
-//                    type = "text/plain"
-//                    putExtra(Intent.EXTRA_TEXT, "Интересный фильм, советую посмотреть: ${getString(it.title)}.")
-//                }
-//
-//                try {
-//                    startActivity(Intent.createChooser(intent, "Send message with..."))
-//                } catch (ex: ActivityNotFoundException) {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "There are no suitable clients installed.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
+            view.findViewById<Button>(R.id.inviteButton).setOnClickListener { _ ->
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, "Интересный фильм, советую посмотреть: ${getString(it.title)}.")
+                }
+
+                try {
+                    startActivity(Intent.createChooser(intent, "Send message with..."))
+                } catch (ex: ActivityNotFoundException) {
+                    Toast.makeText(
+                        requireContext(),
+                        "There are no suitable clients installed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 
