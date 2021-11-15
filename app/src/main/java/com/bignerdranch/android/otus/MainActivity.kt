@@ -15,20 +15,21 @@ open class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         showFilmsList()
+        setBottomNavigationClickListener()
+    }
 
+    private fun setBottomNavigationClickListener() {
         bottomNavigationView.setOnItemReselectedListener {}
         bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.nav_home -> {
                     showFilmsList()
-                    true
                 }
                 R.id.nav_favourites -> {
                     showFavouritesList()
-                    true
                 }
-                else -> false
             }
+            true
         }
     }
 
@@ -49,7 +50,6 @@ open class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragmentContainer, fragment, FavouriteFilmsListFragment.TAG)
-            .addToBackStack(FavouriteFilmsListFragment.TAG)
             .commit()
     }
 

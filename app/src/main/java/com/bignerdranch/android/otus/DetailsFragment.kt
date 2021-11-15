@@ -33,6 +33,7 @@ class DetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_details, container, false)
 
         hideMainToolbar()
+        hideBottomNav()
         initToolbar(view)
 
         return view
@@ -48,7 +49,10 @@ class DetailsFragment : Fragment() {
             view.findViewById<Button>(R.id.inviteButton).setOnClickListener { _ ->
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, "Интересный фильм, советую посмотреть: ${getString(it.title)}.")
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Интересный фильм, советую посмотреть: ${getString(it.title)}."
+                    )
                 }
 
                 try {
@@ -74,18 +78,29 @@ class DetailsFragment : Fragment() {
     }
 
     private fun hideMainToolbar() {
-        (activity as AppCompatActivity).findViewById<View>(R.id.toolbarMain).visibility =
-            View.GONE
+        (activity as AppCompatActivity).findViewById<View>(R.id.toolbarMain).visibility = View.GONE
     }
 
     private fun showMainToolbar() {
         (activity as AppCompatActivity).findViewById<View>(R.id.toolbarMain).visibility =
+            View.VISIBLE
+
+    }
+
+    private fun hideBottomNav() {
+        (activity as AppCompatActivity).findViewById<View>(R.id.bottomNavigation).visibility =
+            View.GONE
+    }
+
+    private fun showBottomNav() {
+        (activity as AppCompatActivity).findViewById<View>(R.id.bottomNavigation).visibility =
             View.VISIBLE
     }
 
     override fun onDestroy() {
         super.onDestroy()
         showMainToolbar()
+        showBottomNav()
     }
 
     companion object {
