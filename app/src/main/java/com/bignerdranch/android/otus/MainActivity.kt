@@ -1,6 +1,7 @@
 package com.bignerdranch.android.otus
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -13,14 +14,16 @@ open class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        showFilmsList()
         setBottomNavigationClickListener()
+
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            showFilmsList()
+        }
     }
 
     private fun setBottomNavigationClickListener() {
-        bottomNavigationView.setOnItemReselectedListener {}
         bottomNavigationView.setOnItemSelectedListener { item ->
+            supportFragmentManager.popBackStack()
             when(item.itemId) {
                 R.id.nav_home -> {
                     showFilmsList()
@@ -38,6 +41,7 @@ open class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragmentContainer, fragment, FilmsListFragment.TAG)
+            .addToBackStack(FilmsListFragment.TAG)
             .commit()
     }
 
@@ -50,12 +54,13 @@ open class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragmentContainer, fragment, FavouriteFilmsListFragment.TAG)
+            .addToBackStack(FavouriteFilmsListFragment.TAG)
             .commit()
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            super.onBackPressed()
         } else {
             CustomDialog().show(supportFragmentManager, TAG_DIALOG)
         }

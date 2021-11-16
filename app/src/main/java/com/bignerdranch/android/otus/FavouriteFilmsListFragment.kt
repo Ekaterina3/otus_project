@@ -81,7 +81,7 @@ class FavouriteFilmsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        mainToolbar.setTitle(R.string.home)
+        mainToolbar.setTitle(R.string.favourites)
     }
 
     companion object {
