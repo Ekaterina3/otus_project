@@ -14,8 +14,7 @@ class FilmsListFragment : Fragment() {
     private val films by lazy {
         arguments?.getParcelableArrayList<FilmData>(ARG_FILMS)
     }
-    private var recyclerView: RecyclerView? = null
-    private var favouritesIdList: ArrayList<Int> = ArrayList()
+    private lateinit var recyclerView: RecyclerView
     private lateinit var mainToolbar: Toolbar
 
     override fun onCreateView(
@@ -24,41 +23,32 @@ class FilmsListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_films_list, container, false)
         initToolbar()
+        initRecycler(view)
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    private fun initRecycler(view: View) {
         recyclerView = view.findViewById(R.id.filmsRecycler)
-        recyclerView?.apply {
-            this.adapter = films?.let { film ->
-                FilmsAdapter(film, object :
-                    FilmsAdapter.ItemClickListener {
-                        override fun detailsBtnClickListener(film: FilmData, position: Int) {
-                            onDetailsBtnClicked(film, position)
-                        }
-                        override fun favouritesBtnClickListener(film: FilmData, position: Int) {
-                            onFavouritesBtnClicked(film, position)
-                        }
+        recyclerView.adapter = films?.let { film ->
+            FilmsAdapter(film, object :
+                FilmsAdapter.ItemClickListener {
+                    override fun detailsBtnClickListener(film: FilmData, position: Int) {
+                        onDetailsBtnClicked(film, position)
                     }
-                )
-            }
+                    override fun favouritesBtnClickListener(film: FilmData, position: Int) {
+                        onFavouritesBtnClicked(film, position)
+                    }
+                }
+            )
         }
     }
 
     private fun onFavouritesBtnClicked(item: FilmData, position: Int) {
-        if (item.isFavourite) {
-            favouritesIdList.remove(item.id)
-        } else {
-            favouritesIdList.add(item.id)
-        }
         item.isFavourite = !item.isFavourite
-        recyclerView?.adapter?.notifyItemChanged(position)
+        recyclerView.adapter?.notifyItemChanged(position)
     }
 
     private fun onDetailsBtnClicked(item: FilmData, position: Int) {
-//        resetSelection()
         selectFilm(item, position)
 
         activity?.supportFragmentManager?.beginTransaction()
@@ -66,14 +56,9 @@ class FilmsListFragment : Fragment() {
             ?.addToBackStack(null)?.commit()
     }
 
-//    private fun resetSelection() {
-//        films?.get(lastSelectedFilmIndex)?.isSelected = false
-//        recyclerView?.adapter?.notifyItemChanged(lastSelectedFilmIndex)
-//    }
-
     private fun selectFilm(item: FilmData, position: Int) {
         item.wasVisited = true
-        recyclerView?.adapter?.notifyItemChanged(position)
+        recyclerView.adapter?.notifyItemChanged(position)
     }
 
     private fun initToolbar() {

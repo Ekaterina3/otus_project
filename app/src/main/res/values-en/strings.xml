@@ -10,4 +10,5 @@
     <string name="cancel">Cancel</string>
     <string name="exit">Exit</string>
     <string name="home">Home</string>
+    <string name="favourites_empty_list">Nothing has been added yet</string>
 </resources>

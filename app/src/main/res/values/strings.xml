@@ -15,4 +15,5 @@
     <string name="cancel">Отмена</string>
     <string name="exit">Выйти</string>
     <string name="home">Главная</string>
+    <string name="favourites_empty_list">Список пока пуст</string>
 </resources>
