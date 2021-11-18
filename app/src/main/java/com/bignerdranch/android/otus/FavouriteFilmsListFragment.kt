@@ -49,8 +49,8 @@ class FavouriteFilmsListFragment : Fragment() {
     private fun removeFromFavourites(item: FilmData, position: Int, view: View) {
         item.isFavourite = false
         films?.removeAt(position)
-        recyclerView.adapter?.notifyItemChanged(position)
         recyclerView.adapter?.notifyItemRemoved(position)
+        recyclerView.adapter?.notifyItemChanged(position)
         checkListOnEmpty()
         showSnakbar(view, item, position)
     }
