@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.snackbar.Snackbar
 
 class FavouriteFilmsListFragment : Fragment() {
 
@@ -37,19 +38,40 @@ class FavouriteFilmsListFragment : Fragment() {
                 override fun detailsBtnClickListener(film: FilmData, position: Int) {
                     onDetailsBtnClicked(film, position)
                 }
+
                 override fun favouritesBtnClickListener(film: FilmData, position: Int) {
-                    removeFromFavourites(film, position)
+                    removeFromFavourites(film, position, view)
                 }
             })
         }
     }
 
-    private fun removeFromFavourites(item: FilmData, position: Int) {
+    private fun removeFromFavourites(item: FilmData, position: Int, view: View) {
         item.isFavourite = false
         films?.removeAt(position)
         recyclerView.adapter?.notifyItemRemoved(position)
         recyclerView.adapter?.notifyItemChanged(position)
+        checkListOnEmpty()
+        showSnakbar(view, item, position)
+    }
 
+    private fun showSnakbar(view: View, item: FilmData, position: Int) {
+        val snackbar = Snackbar.make(
+            view,
+            getString(R.string.removed_from_favourites, getString(item.title)),
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction(getString(R.string.cancel)) {
+            addToFavourites(item, position)
+        }
+        snackbar.show()
+    }
+
+    private fun addToFavourites(item: FilmData, position: Int) {
+        item.isFavourite = true
+        films?.add(position, item)
+        recyclerView.adapter?.notifyItemInserted(position)
+        recyclerView.adapter?.notifyItemChanged(position)
         checkListOnEmpty()
     }
 
@@ -65,7 +87,11 @@ class FavouriteFilmsListFragment : Fragment() {
         selectFilm(item, position)
 
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragmentContainer, DetailsFragment.newInstance(item), DetailsFragment.TAG)
+            ?.replace(
+                R.id.fragmentContainer,
+                DetailsFragment.newInstance(item),
+                DetailsFragment.TAG
+            )
             ?.addToBackStack(null)?.commit()
     }
 
