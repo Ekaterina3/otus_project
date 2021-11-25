@@ -15,17 +15,7 @@ class FilmViewHolder(filmView: View) : RecyclerView.ViewHolder (filmView) {
     fun bind (item: FilmData) {
         titleView.text = context.getString(item.title)
         imageView.setImageResource(item.image)
-
-        if (item.isSelected) {
-            titleView.setTextColor(ContextCompat.getColor(context, R.color.purple_200))
-        } else {
-            titleView.setTextColor(ContextCompat.getColor(context, R.color.black))
-        }
-
-        if (item.isFavourite) {
-            btnFavourites.setImageResource(R.drawable.ic_baseline_favorite_24)
-        } else {
-            btnFavourites.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-        }
+        titleView.setTextColor(ContextCompat.getColor(context, if (item.wasVisited) R.color.purple_200 else R.color.black))
+        btnFavourites.setImageResource(if (item.isFavourite) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24)
     }
 }

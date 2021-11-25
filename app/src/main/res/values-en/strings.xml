@@ -9,4 +9,8 @@
     <string name="alert">Are you sure?</string>
     <string name="cancel">Cancel</string>
     <string name="exit">Exit</string>
+    <string name="home">Home</string>
+    <string name="favourites_empty_list">Nothing has been added yet</string>
+    <string name="added_to_favourites">\"%s\" added to favourites</string>
+    <string name="removed_from_favourites">\"%s\" removed from favourites</string>
 </resources>

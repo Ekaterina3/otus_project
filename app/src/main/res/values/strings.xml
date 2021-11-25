@@ -14,4 +14,8 @@
     <string name="alert">Вы уверены, что хотите выйти из приложения?</string>
     <string name="cancel">Отмена</string>
     <string name="exit">Выйти</string>
+    <string name="home">Главная</string>
+    <string name="favourites_empty_list">Список пока пуст</string>
+    <string name="added_to_favourites">\"%s\" добавлен в избранное</string>
+    <string name="removed_from_favourites">\"%s\" удален из избранного</string>
 </resources>
