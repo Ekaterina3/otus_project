@@ -58,7 +58,7 @@ class FavouriteFilmsListFragment : Fragment() {
     private fun showSnakbar(view: View, item: FilmData, position: Int) {
         val snackbar = Snackbar.make(
             view,
-            getString(R.string.removed_from_favourites, getString(item.title)),
+            getString(R.string.removed_from_favourites, item.title),
             Snackbar.LENGTH_LONG
         )
         snackbar.setAction(getString(R.string.cancel)) {

@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class FilmsAdapter (
-        private val items: List<FilmData>,
-        private val clickListener: ItemClickListener
+    private val items: List<FilmData>,
+    private val clickListener: ItemClickListener
     ): RecyclerView.Adapter<FilmViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {

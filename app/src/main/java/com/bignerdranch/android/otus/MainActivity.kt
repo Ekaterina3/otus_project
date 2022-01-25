@@ -3,11 +3,16 @@ package com.bignerdranch.android.otus
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 open class MainActivity : AppCompatActivity() {
     private val bottomNavigationView: BottomNavigationView by lazy {
         findViewById(R.id.bottomNavigation)
     }
+
+    var films = mutableListOf<FilmData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,9 +20,35 @@ open class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setBottomNavigationClickListener()
 
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            showFilmsList()
-        }
+        App.instance.api.getFilms()
+            .enqueue(object : Callback<List<ResponseModel>?> {
+                override fun onFailure(call: Call<List<ResponseModel>?>, t: Throwable) {
+                }
+                override fun onResponse(
+                    call: Call<List<ResponseModel>?>,
+                    response: Response<List<ResponseModel>?>
+                ) {
+                    if (response.isSuccessful) {
+                        films.clear()
+                        response.body()
+                            ?.forEach {
+                                films.add(
+                                    FilmData(
+                                        it.title,
+                                        null,
+                                        it.image,
+                                        wasVisited = false,
+                                        isFavourite = false,
+                                        id = it.id
+                                    )
+                                )
+                            }
+                        if (supportFragmentManager.backStackEntryCount == 0) {
+                            showFilmsList()
+                        }
+                    }
+                }
+            })
     }
 
     private fun setBottomNavigationClickListener() {
@@ -67,14 +98,5 @@ open class MainActivity : AppCompatActivity() {
 
     companion object {
         const val TAG_DIALOG = "dialog"
-
-        val films = mutableListOf(
-            FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 1, isFavourite = true),
-            FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 2),
-            FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 3),
-            FilmData(R.string.film_1, R.string.description_film_1, R.drawable.film1, id = 4),
-            FilmData(R.string.film_2, R.string.description_film_2, R.drawable.film2, id = 5),
-            FilmData(R.string.film_3, R.string.description_film_3, R.drawable.film3, id = 6)
-        )
     }
 }
