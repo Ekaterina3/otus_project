@@ -51,7 +51,7 @@ class FilmsListFragment : Fragment() {
     }
 
     private fun showSnackbar(item: FilmData, view: View) {
-        val name = getString(item.title)
+        val name = item.title
         val msg = if (item.isFavourite) getString(
             R.string.added_to_favourites,
             name
